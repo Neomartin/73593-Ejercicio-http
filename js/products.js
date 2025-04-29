@@ -36,11 +36,14 @@ function pintarProductos(arrayProductos) {
                   ${prod.description}
                 </p>
 
-                <p class="fw-bold h4 text-primary">$ ${prod.price}</p>
+                <p class="fw-bold h4 text-primary">$ 
+                    ${prod.price}
+                </p>
                 <a href="/product-detail/${prod.id}" class="btn btn-dark">Ver más</a>
               </div>
             </div>`;
     })
+
 }
 
 
