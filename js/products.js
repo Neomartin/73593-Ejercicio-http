@@ -31,7 +31,10 @@ function pintarProductos(arrayProductos) {
               <img src="${prod.image}" class="card-img-top" alt="${prod.title}" />
               <div class="card-body">
                 <h5 class="card-title" title="${prod.title}">${prod.title}</h5>
-                
+                <a
+                  href="https://my-bank.example.com/welcome?user=<img src=x onerror=alert('hello!')>">
+                  Get a free kitten!</a
+                >
                 <p class="card-text" title="${prod.description}">
                   ${prod.description}
                 </p>

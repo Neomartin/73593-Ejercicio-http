@@ -3,31 +3,80 @@ const city = "Mendoza";
                                                                //? Query params
 const API_URL = `https://api.openweathermap.org/data/2.5/weather?appid=${apiKey}&units=metric`;
 
+const btnSave = document.getElementById("weather-save");
+
 
 const inputSearchWeather = document.getElementById('weather-search');
 
+/**
+ * Obtener el clima de la ubicación actual del usuario
+ * Si este permite al buscador acceder a su ubicación
+ * 
+ */
+
+if(navigator.geolocation) {
+
+  navigator.geolocation.getCurrentPosition(
+    // Se obtiene la ubicación del usuario
+    (position) => {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+
+      buscarClima(`&lat=${lat}&lon=${lon}`); 
+    },
+    (error) => {
+      console.log(error);
+    } // Error al obtener la ubicación
+  );
+
+}
+
+
+// # Obtener el clima de una ciudad que ingrese el usuario
 inputSearchWeather.addEventListener('keyup', (evento) => {
 
-    console.log(evento.key)
+    if(evento.key === "Enter") {
+      
+      // 1- Obtener el valor del input
+      const ciudad = inputSearchWeather.value;
+      // 2- Buscar el clima de la ciudad ingresada
+      buscarClima(`&q=${ciudad}`);
+      // 3- Pintar el clima en el HTML
+
+    } 
 
 })
 
+function buscarClima(query) {
+  console.log(query);
+  
+
+  axios
+    .get(`${API_URL+query}`)
+    .then((response) => {
+      console.log(response.data); // Obtenemos la data de la respuesta
+
+      const clima = response.data;
+
+      drawWeather(clima);
+
+      if(query.includes("&q=")) {
+        btnSave.removeAttribute('disabled');
+      }
 
 
-axios
-  .get(`${API_URL}&q=${city}`)
-  .then((response) => {
-    console.log(response.data); // Obtenemos la data de la respuesta 
-
-    const clima = response.data;
+    })
+    .catch((error) => {
+      console.error("Error al obtener los datos del clima", error);
     
-    drawWeather(clima);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'No se encontró la ciudad ingresada!',
+      })
 
-  })
-  .catch((error) => {
-    console.error("Error al obtener los datos del clima", error);
-  });
-
+    });
+}
 
 function drawWeather(data) {
 
@@ -47,34 +96,32 @@ function drawWeather(data) {
     locationHTML.innerText = location;
     tempHTML.innerText = temp;
 
-    // iconHTML.innerHTML = `<img src=https://openweathermap.org/img/wn/${icon}@2x.png>`;
+    iconHTML.innerHTML = `<img src=https://openweathermap.org/img/wn/${icon}@2x.png>`;
+    // iconHTML.innerHTML = `<script>alert("Hola")<\/script>`
 
-    const elementoImg = document.createElement('img');
+    // const elementoImg = document.createElement('img');
 
-    elementoImg.src = `https://openweathermap.org/img/wn/${icon}@2x.png`;
+    // elementoImg.src = `https://openweathermap.org/img/wn/${icon}@2x.png`;
 
-    elementoImg.setAttribute('alt', `Imagen clima ${location}`)
+    // elementoImg.setAttribute('alt', `Imagen clima ${location}`)
 
-    elementoImg.classList.add('imagen-clima', 'lg')
+    // elementoImg.classList.add('imagen-clima', 'lg')
 
-    elementoImg.style.border = '2px solid black';
+    // elementoImg.style.border = '2px solid black';
 
-    iconHTML.appendChild(elementoImg)
-
-    
+    // iconHTML.innerHTML = ''; // Limpiar el HTML del contenedor de la imagen
+    // iconHTML.appendChild(elementoImg); // Agregar la imagen al contenedor
 
     // elementoImg.innerText = 'Algun texto'
 
     // elementoImg.removeAttribute('alt')
-    
-    
-    console.log(elementoImg)
-
-
-
-    
-    console.log(temp, icon, location);
 
 }
 
+btnSave.addEventListener('click', () => {
+  
+  const ciudad = inputSearchWeather.value;
+  console.log("Se guardará:", ciudad)
+
+})
 
