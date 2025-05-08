@@ -65,7 +65,10 @@
           class="weather-input"
           placeholder="Ingrese ciudad"
         />
-        <button class="btn btn-primary" disabled id="weather-save">
+        <button class="btn btn-primary" 
+                disabled 
+                id="weather-save"
+                title="Guardar ciudad">
           💾
         </button>
       </div>
@@ -74,9 +77,15 @@
         <div class="weather-info__city" id="weather-location">-</div>
         <div class="weather-info__temp" id="weather-temp">-</div>
         <div class="weather-info__icon" id="weather-icon"></div>
+
+
+
         <div class="weather-datetime-container" id="weather-datetime-container">
-          Registro:
+          Fecha: <span id="weather-date">-</span>
         </div>
+
+
+        
       </div>
     </div>
     <!-- <script> alert("Hola") </script> -->
